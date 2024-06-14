@@ -17,8 +17,8 @@ const Form = () => {
         const errors = {};
         if (!formData.name) {
             errors.name = 'Name is required';
-        } else if ((/^\d/.test(formData.name))) {
-            errors.name = 'Name cannot start with a number';
+        } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
+            errors.name = 'Name can only contain letters';
         }
         if (!formData.email) {
             errors.email = 'Email is required';
@@ -29,6 +29,8 @@ const Form = () => {
             errors.password = 'Password is required';
         } else if (formData.password.length < 6) {
             errors.password = 'Password must be at least 6 characters long';
+        }else if (!/(?=.*[0-9])(?=.*[a-zA-Z])/.test(formData.password)) {
+            errors.password = 'Password must contain both letters and numbers';
         }
         return errors;
     };
@@ -42,8 +44,9 @@ const Form = () => {
         e.preventDefault();
         const validationErrors = validate();
         if (Object.keys(validationErrors).length === 0) {
-            alert('Form submitted successfully:', formData);
-            // Handle form submission (e.g., send data to the server)
+            alert('Form submitted successfully:');
+            console.log(formData);
+           
         } else {
             setErrors(validationErrors);
         }
